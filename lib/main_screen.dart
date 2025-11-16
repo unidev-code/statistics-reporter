@@ -83,7 +83,7 @@ class _MainScreenState extends State<MainScreen> {
                           size: 26,
                           color: isSelected
                               ? const Color(0xFF6C63FF)
-                              : Colors.grey[500],
+                              : Colors.grey[600],
                         ),
                         AnimatedContainer(
                           duration: const Duration(milliseconds: 250),
