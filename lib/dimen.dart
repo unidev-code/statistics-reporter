@@ -1,0 +1,1 @@
+const double textSizedLabelMedium = 14;
