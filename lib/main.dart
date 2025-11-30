@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:statistics_reporter/colors.dart';
 import 'package:statistics_reporter/login_screen.dart';
 import 'package:statistics_reporter/main_screen.dart';
+import 'package:statistics_reporter/auth_screen.dart';
 
 import 'dimen.dart';
 
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Statistics Reporter',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
@@ -24,10 +25,6 @@ class MyApp extends StatelessWidget {
         )
       ),
       home: LoginScreen(),
-        useMaterial3: false,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-
     );
   }
 }
