@@ -1,115 +1,113 @@
 import 'package:flutter/material.dart';
 
-class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
+class MainScreen extends StatefulWidget {
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
 
-  void _openBeautifulBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      builder: (context) {
-        return DraggableScrollableSheet(
-          initialChildSize: 0.35,
-          minChildSize: 0.25,
-          maxChildSize: 0.6,
-          builder: (context, scrollController) {
-            return Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(30),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 20,
-                    spreadRadius: 5,
-                  ),
-                ],
-              ),
-              child: ListView(
-                controller: scrollController,
-                children: [
-                  Center(
-                    child: Container(
-                      width: 50,
-                      height: 5,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    "Quick Actions",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _sheetItem(Icons.pie_chart, "Statistics"),
-                      _sheetItem(Icons.document_scanner, "Reports"),
-                      _sheetItem(Icons.person, "Profile"),
-                    ],
-                  ),
-                  const SizedBox(height: 25),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _sheetItem(Icons.settings, "Settings"),
-                      _sheetItem(Icons.notifications, "Alerts"),
-                      _sheetItem(Icons.share, "Share"),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
+class _MainScreenState extends State<MainScreen> {
+  int _selectedIndex = 0;
 
-  Widget _sheetItem(IconData icon, String title) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(18),
-          decoration: BoxDecoration(
-            color: Colors.deepPurple.withOpacity(0.1),
-            shape: BoxShape.circle,
-          ),
-          child: Icon(icon, color: Colors.deepPurple, size: 28),
-        ),
-        const SizedBox(height: 8),
-        Text(title),
-      ],
-    );
+  final List<IconData> _icons = [
+    Icons.dashboard_rounded,
+    Icons.show_chart_rounded,
+    Icons.people_alt_rounded,
+    Icons.settings_rounded,
+  ];
+
+  final List<String> _labels = ['داشبورد', 'سئو', 'کاربران', 'تنظیمات'];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Main screen"),
-        backgroundColor: Colors.deepPurple,
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.deepPurple,
-        onPressed: () => _openBeautifulBottomSheet(context),
-        child: const Icon(Icons.keyboard_arrow_up, size: 32),
-      ),
-      body: const Center(
+      backgroundColor: const Color(0xFFF5F6FA),
+      body: Center(
         child: Text(
-          'Main screen',
-          style: TextStyle(fontSize: 22),
+          _labels[_selectedIndex],
+          style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+        ),
+      ),
+
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Container(
+          height: 80,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 10,
+                offset: Offset(0, -2),
+              ),
+            ],
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(24),
+              topRight: Radius.circular(24),
+              bottomLeft: Radius.circular(24),
+              bottomRight: Radius.circular(24),
+            ),
+          ),
+
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: List.generate(_icons.length, (index) {
+              final bool isSelected = _selectedIndex == index;
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: GestureDetector(
+                  onTap: () => _onItemTapped(index),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 800),
+                    curve: Curves.easeOut,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 18,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? const Color(0xFFEDE8FE)
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          _icons[index],
+                          size: 26,
+                          color: isSelected
+                              ? const Color(0xFF6C63FF)
+                              : Colors.grey[600],
+                        ),
+                        AnimatedContainer(
+                          duration: const Duration(milliseconds: 250),
+                          width: isSelected ? 8 : 0,
+                        ),
+                        AnimatedOpacity(
+                          opacity: isSelected ? 1 : 0,
+                          duration: const Duration(milliseconds: 250),
+                          child: Text(
+                            isSelected ? _labels[index] : '',
+                            style: const TextStyle(
+                              color: Color(0xFF6C63FF),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }),
+          ),
         ),
       ),
     );

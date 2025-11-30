@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'Statistics Reporter',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        fontFamily: 'DanaFaNum',
         colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
         textTheme: TextTheme(
           labelMedium: TextStyle(color: textColorPrimary, fontSize: textSizedLabelMedium),

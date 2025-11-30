@@ -5,8 +5,17 @@ import 'package:statistics_reporter/widgets/bottom_items.dart';
 
 import 'widgets/app_text_field.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  bool isLoading = false;
+
   TextEditingController usernameController = TextEditingController();
+
   TextEditingController passwordController = TextEditingController();
 
   @override
@@ -21,24 +30,46 @@ class LoginScreen extends StatelessWidget {
             SizedBox(height: 16),
             buildAppTextField(context, title: 'Password', hint: 'Enter password...', controller: passwordController),
             SizedBox(height: 32),
+            if(isLoading)
+            CircularProgressIndicator(),
+            if(!isLoading)
             buildAppButton(
               context,
               title: 'LOGIN',
               onPressed: () {
-                const validUsername = 'admin';
-                const validPassword = '1234';
+                setState(() {
+                  isLoading = true;
+                });
 
-                if (usernameController.text != validUsername) {
-                  debugPrint('Username is invalid');
-                  return;
-                }
+                Future.delayed(Duration(seconds: 2),() {
+                  const validUsername = 'admin';
+                  const validPassword = '1234';
 
-                if (passwordController.text != validPassword) {
-                  debugPrint('Password is invalid');
-                  return;
-                }
+                  if (usernameController.text != validUsername) {
+                    debugPrint('Username is invalid');
 
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => BottomNavController()));
+                    isLoading = false;
+                    setState(() {
+                    });
+
+                    return;
+                  }
+
+                  if (passwordController.text != validPassword) {
+                    debugPrint('Password is invalid');
+
+                    isLoading = false;
+                    setState(() {
+                    });
+                    return;
+                  }
+
+                  isLoading = false;
+                  setState(() {
+                  });
+
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => MainScreen()));
+                });
               },
             ),
           ],
